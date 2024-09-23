@@ -1,6 +1,5 @@
 'use client';
 import { useState } from "react";
-
 export const Signup = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [checked,setchecked] = useState(false);
