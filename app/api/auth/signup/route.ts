@@ -1,11 +1,25 @@
 import { NextRequest,NextResponse } from "next/server";
 import bcrypt from 'bcrypt';
 import client from '@/prisma/index'
+import { z } from 'zod';
+import { signupschema } from "@/support/zodschema";
 export async function POST(req:NextRequest){
     const {username,password,mail} = await req.json();
     const hashedpassword = await  bcrypt.hash(password,10);
     //check if user exists or not
     try{
+        //input validation using zod
+        const result = signupschema.safeParse({
+            username,
+            mail,
+            password
+        })
+        if(!result.success){
+            return NextResponse.json({
+                message : " Input validation failed",
+                status : 411
+            })
+        }
         //checking if user exists or not 
         const existing_user = await client.user.findFirst({
             where :{
@@ -45,13 +59,14 @@ export async function POST(req:NextRequest){
         }
         return NextResponse.json({
             msg : "user created successfully",
+            otp : otp,
             status : 200
         })
 
     }
     catch(e){
         return NextResponse.json({
-            message : 'some error occurred',
+            message : 'some error occurred:' + e,
             status : 500
         })
 

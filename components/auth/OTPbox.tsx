@@ -1,7 +1,6 @@
 
 'use client'
 import { useRef } from "react"
-import { ToastContainer, toast } from "react-toastify"
 
 export const OTPbox = ()=>{
     //creating a input ref array which will help to easily shift focus from one to other block

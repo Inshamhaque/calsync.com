@@ -4,11 +4,11 @@ import { theme } from "@/theme";
 
 export default function(){
     return(
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="bg-gray-800">
             < Signup />
             </div>
-            <div className="bg-slate-900">
+            <div className="hidden md:block bg-slate-900">
             < Subpart />
             </div>
         </div>

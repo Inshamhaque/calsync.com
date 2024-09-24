@@ -1,15 +1,56 @@
 'use client';
-import { useState } from "react";
+import { use, useState } from "react";
+import { signuptype } from "@/support/zodschema";
+import axios from "axios";
 export const Signup = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [checked,setchecked] = useState(false);
+    const [credentials,setcredentials] = useState<signuptype>({
+        username : '',
+        mail : '',
+        password : ''
+    })
+    const BASE_URL  = process.env.BASE_URL;
+    const [passwordcondition,setpasswordcondition] = useState({
+        1: false,
+        2: false,
+        3: false 
+    }) 
     const toggleCheckBox = ()=>{
         setchecked((prev)=>!prev);
     }
     const togglePasswordVisibility = () => {
         setPasswordVisible((prev) => !prev);
     };
+    // handling password on change seperately and dynamically 
+    const passwordChangehandler = (e: any) => {
+        const value = e.target.value;
 
+        // regex conditions
+        const condition1 = /^(?=.*[a-z])(?=.*[A-Z])/.test(value); 
+        const condition2 = value.length >= 7; 
+        const condition3 = /^(?=.*\d)/.test(value); 
+        setpasswordcondition({
+            1: condition1,
+            2: condition2,
+            3: condition3
+        });
+        setcredentials({
+            ...credentials,
+            password: value
+        });
+    };
+    //onClickhandler to send request
+    const handleClick = async(e)=>{
+        e.prevent.default;
+        console.log('base url is : ',BASE_URL);
+        try{
+            const res = await axios.post('')
+        }
+        catch(e){
+
+        }
+    }
     return (
         <div className="m-20 rounded-lg shadow-md">
             {/* CTA */}
@@ -28,6 +69,12 @@ export const Signup = () => {
                             className="mt-1 p-2 w-full rounded-md border border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-500"
                             required 
                             placeholder="username"
+                            onChange={(e:any)=>{
+                                setcredentials({
+                                    ...credentials,
+                                    username : e.target.value
+                                })
+                            }}
                         />
                     </div>
                     <div>
@@ -38,6 +85,12 @@ export const Signup = () => {
                             className="mt-1 p-2 w-full rounded-md border border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-500"
                             placeholder="johndoe@gmail.com"
                             required 
+                            onChange={(e:any)=>{
+                                setcredentials({
+                                    ...credentials,
+                                    mail : e.target.value
+                                })  
+                            }}
                         />
                     </div>
                     <div>
@@ -49,6 +102,7 @@ export const Signup = () => {
                                 className="p-2 w-full rounded-md border border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-500 pr-10"
                                 placeholder="password"
                                 required 
+                                onChange={(e)=>passwordChangehandler(e)}
                             />
                             <button 
                                 type="button" 
@@ -71,9 +125,52 @@ export const Signup = () => {
                             </button>
                         </div>
                         <ul className="mt-2 text-gray-400 list-disc list-inside">
-                            <li>Mix of uppercase & lowercase letters</li>
-                            <li>Minimum 7 characters long</li>
-                            <li>Contain at least 1 number</li>
+                            {credentials.password.length==0?
+                            <li>
+                                Mix of uppercase & lowercase letters
+                            </li>:
+                            !passwordcondition[1]?
+                            //case when condition is false
+                            <li className="text-red-500">
+                                Mix of uppercase & lowercase letters
+                            </li>
+                            :
+                            //case when conition is true
+                            <li className="text-green-400">
+                                Mix of uppercase & lowercase letters
+                            </li>
+                            }
+                            {credentials.password.length==0?
+                            <li>
+                                Minimum 7 characters long
+                            </li>:
+                            !passwordcondition[2]?
+                            //case when condition is false
+                            <li className="text-red-500">
+                                Minimum 7 characters long
+                            </li>
+                            :
+                            //case when conition is true
+                            <li className="text-green-400">
+                                Minimum 7 characters long
+                            </li>
+                            }
+                            {credentials.password.length==0?
+                            <li>
+                                Contains at least 1 number
+                            </li>:
+                            !passwordcondition[3]?
+                            //case when condition is false
+                            <li className="text-red-500">
+                                Contains at least 1 number
+                            </li>
+                            :
+                            //case when conition is true
+                            <li className="text-green-400">
+                                Contains at least 1 number
+                            </li>
+                            }
+                            
                         </ul>
                     </div>
                     <div>
@@ -93,6 +190,7 @@ export const Signup = () => {
                     <button 
                         type="submit" 
                         className="mt-4 bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-600 transition duration-200"
+                        onClick={(e)=>handleClick(e)}
                     >
                         Sign Up
                     </button>
