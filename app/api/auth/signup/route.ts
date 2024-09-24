@@ -52,16 +52,19 @@ export async function POST(req:NextRequest){
             }
         });
         if(!new_user){
+            console.log('user not created');
             return NextResponse.json({
                 msg : "Try again later",
                 status : 402
             })
         }
+        console.log('user created successfully');
         return NextResponse.json({
             msg : "user created successfully",
             otp : otp,
             status : 200
         })
+        
 
     }
     catch(e){

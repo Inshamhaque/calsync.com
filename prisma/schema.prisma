@@ -10,7 +10,7 @@ datasource db {
 model User {
   id          Int     @id @default(autoincrement())
   username    String  @unique
-  mail        String
+  mail        String  @unique
   password    String
   is_verified Boolean @default(false)
   otp         OTP     @relation(fields: [id], references: [otpId])

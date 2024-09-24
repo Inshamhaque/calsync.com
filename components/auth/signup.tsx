@@ -1,6 +1,8 @@
 'use client';
-import { use, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { signuptype } from "@/support/zodschema";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 export const Signup = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -10,18 +12,32 @@ export const Signup = () => {
         mail : '',
         password : ''
     })
-    const BASE_URL  = process.env.BASE_URL;
+    const BASE_URL  = process.env.NEXT_PUBLIC_BASE_URL;
     const [passwordcondition,setpasswordcondition] = useState({
         1: false,
         2: false,
         3: false 
     }) 
+    const router = useRouter();
     const toggleCheckBox = ()=>{
         setchecked((prev)=>!prev);
     }
     const togglePasswordVisibility = () => {
         setPasswordVisible((prev) => !prev);
     };
+    //error toast 
+    const error = ()=>{
+        return toast.success('Error sending mail to the user, Check your credentials',{
+            position : 'top-right',
+            delay : 5000
+        })
+    }
+    const error2 = ()=>{
+        return toast.success('Error creating user',{
+            position : 'top-right',
+            delay : 5000
+        })
+    }
     // handling password on change seperately and dynamically 
     const passwordChangehandler = (e: any) => {
         const value = e.target.value;
@@ -41,14 +57,60 @@ export const Signup = () => {
         });
     };
     //onClickhandler to send request
-    const handleClick = async(e)=>{
-        e.prevent.default;
+    const handleClick = async(e:any)=>{
+        e.preventDefault();
         console.log('base url is : ',BASE_URL);
         try{
-            const res = await axios.post('')
+            const res = await axios.post(`${BASE_URL}/api/auth/signup`,{
+                mail : credentials.mail,
+                password : credentials.password,
+                username : credentials.username 
+            })
+            if(!res){
+                error2();
+                console.log('error creating user'); 
+                return;
+            }
+            //send mail here and redirect the user to verify page
+            const date = new Date();
+            const today = new Date(Date.now());
+            const res2 = await axios.post(`${BASE_URL}/api/mail`, {
+            email: credentials.mail,
+            subject: "Verification OTP",
+            message: 
+            `<html>
+        <body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+            <div style="border: 2px solid #000; padding: 20px; text-align: center; width: 600px; margin: 0 auto; background-color: #fff;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-weight: bold; font-size: 22px;">CalSync.com</div>
+            </div>
+            <div style="font-size: 18px; padding: 4px; margin-bottom: 20px;"></div>
+            <hr style="border-top: 1px solid #000; margin: 20px 0;">
+            <div style="font-size: 20px; font-weight: bold; padding: 10px; color: #333;">OTP Verification</div>
+            <div style="font-size: 18px; padding: 4px; line-height: 1.5; color: #555;">
+                <p>Dear ${credentials.username}</p>
+                <p>Welcome to the CalSync!</p>
+                <p>To complete your registration, please verify your email by using the OTP below:</p>
+                <p style="font-size: 24px; font-weight: bold; color: #007bff;">${res.data.otp}</p>
+                <p>This OTP is valid for the next 10 minutes. If you did not request this, please ignore this email.</p>
+            </div>
+            
+            <hr style="border-top: 1px solid #000; margin: 20px 0;">
+            <div style="font-size: 16px; padding-top: 10px; color: #777;">
+                <p>Date:${today}</p>
+            </div>
+            </div>
+        </body>
+        </html>`
+            });
+            if(res2){
+                localStorage.setItem('mail :',credentials.mail)
+                router.push('/auth/verify');
+            }
         }
         catch(e){
-
+            error();
+            console.log('some error occurred'+e);
         }
     }
     return (
@@ -196,6 +258,7 @@ export const Signup = () => {
                     </button>
                 </form>
             </div>
+            < ToastContainer />
         </div>
     );
 };
