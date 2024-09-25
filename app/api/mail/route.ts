@@ -12,21 +12,21 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Please provide all the required fields.' }, { status: 400 });
         }
  
-        // Create a transporter using your SMTP credentials
+        
         const transporter = nodemailer.createTransport({
-            service: 'gmail', // Or another email provider like SMTP
+            service: 'gmail', 
             auth: {
-                user: process.env.SMTP_USER, // Your SMTP username (Gmail or other)
-                pass: process.env.SMTP_PASS, // Your SMTP password (Gmail or other)
+                user: process.env.SMTP_USER, 
+                pass: process.env.SMTP_PASS, 
             },
         });    
          
         // Send the email using nodemailer
         await transporter.sendMail({
-            from: process.env.SMTP_USER, // Sender's email address
-            to: email,                    // Recipient's email address
-            subject: subject,              // Subject of the email
-            html: message,                 // Plaian text message
+            from: process.env.SMTP_USER, 
+            to: email,                    
+            subject: subject,              
+            html: message,                 
         });
 
         // Return a success response

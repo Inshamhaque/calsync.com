@@ -22,7 +22,7 @@ export const Subpart = () => {
                         </div>
                     ))}
                     {array.map((element)=>(
-                        <div key={element} className="border border-gray-300 p-4 rounded-lg text-center">
+                        <div key={element} className=" hover:bg-slate-500 hover:animate-bounce border border-gray-300 p-4 rounded-lg text-center">
                             {element}
                         </div>
                     ))}

@@ -19,7 +19,9 @@ export const HomeClient = () => {
 
     return (
         <div>
-            <div></div>
+            <div>
+                
+            </div>
             <ToastContainer />
         </div>
     );

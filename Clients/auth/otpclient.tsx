@@ -16,7 +16,11 @@ export const OTPClient = () => {
 
     useEffect(() => {
         const storedMail = localStorage.getItem('mail :');
+        if(!storedMail){
+            router.push('/auth/signin');
+        }
         setMail(storedMail);
+        
     }, []);
 
     const error = () => {

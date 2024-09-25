@@ -11,3 +11,9 @@ export const signupschema = z.object({
     })
 })
 export type signuptype = z.infer<typeof signupschema>;
+//singin schema
+export const signinschema = z.object({
+    mail : z.string(),
+    password : z.string()
+})
+export type signintype = z.infer<typeof signinschema>

@@ -1,69 +1,49 @@
 'use client';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signuptype } from "@/support/zodschema";
+import { signintype } from "@/support/zodschema";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-export const Signup = () => {
+export const Signin = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [checked,setchecked] = useState(false);
-    const [credentials,setcredentials] = useState<signuptype>({
-        username : '',
+    const [credentials,setcredentials] = useState<signintype>({
         mail : '',
         password : ''
     })
     const BASE_URL  = process.env.NEXT_PUBLIC_BASE_URL;
-    const [passwordcondition,setpasswordcondition] = useState({
-        1: false,
-        2: false,
-        3: false 
-    }) 
     const router = useRouter();
-    const toggleCheckBox = ()=>{
-        setchecked((prev)=>!prev);
-    }
     const togglePasswordVisibility = () => {
         setPasswordVisible((prev) => !prev);
     };
     //error toast 
     const error = ()=>{
-        return toast.error('Incorrect credentials',{
+        return toast.success('Error sending mail to the user, Check your credentials',{
             position : 'top-right',
             delay : 5000
         })
     }
-    const error2 = ()=>{
-        return toast.error('User already exists',{
+    const error_incorrect_password = ()=>{
+        return toast.error('Incorrect password',{
+            position : "top-right",
+            delay : 5000
+        })
+    }
+    const error_user_not_signed_up = ()=>{
+        return toast.error('User does not exist, try signing up',{
             position : 'top-right',
             delay : 5000
         })
     }
-    const error3 = ()=>{
-        return toast.error('Error creating user',{
-            position : 'top-right',
-            delay : 5000
-        })
-    }
-    const error4 = ()=>{
-        return toast.error('Some unknown error occurred',{
-            position : 'top-right',
+    const error_unkown = ()=>{
+        return toast.error('Some error occurred',{
+            position : "top-right",
             delay : 5000
         })
     }
     // handling password on change seperately and dynamically 
     const passwordChangehandler = (e: any) => {
         const value = e.target.value;
-
-        // regex conditions
-        const condition1 = /^(?=.*[a-z])(?=.*[A-Z])/.test(value); 
-        const condition2 = value.length >= 7; 
-        const condition3 = /^(?=.*\d)/.test(value); 
-        setpasswordcondition({
-            1: condition1,
-            2: condition2,
-            3: condition3
-        });
         setcredentials({
             ...credentials,
             password: value
@@ -74,32 +54,23 @@ export const Signup = () => {
         e.preventDefault();
         console.log('base url is : ',BASE_URL);
         try{
-            const res = await axios.post(`${BASE_URL}/api/auth/signup`,{
+            const res = await axios.post(`${BASE_URL}/api/auth/signin`,{
                 mail : credentials.mail,
                 password : credentials.password,
-                username : credentials.username 
             })
             if(res.status!=200){
-                if(res.status==411){
-                    console.log('incorrect credential format');
-                    error();
+               if(res.status==404){
+                    error_user_not_signed_up();
                     return;
-                }
-                else if(res.status==409){
-                    console.log('user already exists');
-                    error2();
+               }
+               else if(res.status==411){
+                    error_incorrect_password();
                     return;
-                }
-                else if(res.status==422){
-                    console.log('error creating user');
-                    error3();
+               }
+               else{
+                    error_unkown();
                     return;
-                }
-                else{
-                    console.log('some other error occurred');
-                    error4();
-                    return;
-                }
+               }
             }
             //send mail here and redirect the user to verify page
             const date = new Date();
@@ -109,7 +80,7 @@ export const Signup = () => {
             subject: "Verification OTP",
             message: 
             `<html>
-        <body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+            <body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
             <div style="border: 2px solid #000; padding: 20px; text-align: center; width: 600px; margin: 0 auto; background-color: #fff;">
             <div style="text-align: center; margin-bottom: 20px;">
                 <div style="font-weight: bold; font-size: 22px;">CalSync.com</div>
@@ -118,7 +89,7 @@ export const Signup = () => {
             <hr style="border-top: 1px solid #000; margin: 20px 0;">
             <div style="font-size: 20px; font-weight: bold; padding: 10px; color: #333;">OTP Verification</div>
             <div style="font-size: 18px; padding: 4px; line-height: 1.5; color: #555;">
-                <p>Dear ${credentials.username}</p>
+                <p>Dear user</p>
                 <p>Welcome to the CalSync!</p>
                 <p>To complete your registration, please verify your email by using the OTP below:</p>
                 <p style="font-size: 24px; font-weight: bold; color: #007bff;">${res.data.otp}</p>
@@ -130,8 +101,8 @@ export const Signup = () => {
                 <p>Date:${today}</p>
             </div>
             </div>
-        </body>
-        </html>`
+            </body>
+            </html>`
             });
             if(res2){
                 localStorage.setItem('mail :',credentials.mail)
@@ -144,31 +115,15 @@ export const Signup = () => {
         }
     }
     return (
-        <div className="m-20 rounded-lg shadow-md">
+        <div className="flex-col min-h-screen bg-slate-900 h-full m-5 rounded-lg border border-gray-600 shadow-md p-10 w-[30rem]">
             {/* CTA */}
-            <div className="mb-10">
-                <h2 className="text-white font-bold text-3xl">Create your CalSync.com account</h2>
-                <p className="text-gray-400">Free for individuals. Team plans for collaborative features.</p>
+            <div className="mb-10 text-center">
+                <h2 className="text-white font-bold text-2xl">Welcome Back</h2>
             </div>
             {/* Signup Form */}
             <div>
-                <form className="flex flex-col space-y-4" action="">
-                    <div>
-                        <label htmlFor="username" className="text-white">Username</label>
-                        <input 
-                            type="text" 
-                            id="username" 
-                            className="mt-1 p-2 w-full rounded-md border border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring focus:ring-blue-500"
-                            required 
-                            placeholder="username"
-                            onChange={(e:any)=>{
-                                setcredentials({
-                                    ...credentials,
-                                    username : e.target.value
-                                })
-                            }}
-                        />
-                    </div>
+                <form className="flex flex-col space-y-5 w-inherit" action="">
+                    
                     <div>
                         <label htmlFor="email" className="text-white">Email</label>
                         <input 
@@ -216,76 +171,14 @@ export const Signup = () => {
                                 }
                             </button>
                         </div>
-                        <ul className="mt-2 text-gray-400 list-disc list-inside">
-                            {credentials.password.length==0?
-                            <li>
-                                Mix of uppercase & lowercase letters
-                            </li>:
-                            !passwordcondition[1]?
-                            //case when condition is false
-                            <li className="text-red-500">
-                                Mix of uppercase & lowercase letters
-                            </li>
-                            :
-                            //case when conition is true
-                            <li className="text-green-400">
-                                Mix of uppercase & lowercase letters
-                            </li>
-                            }
-                            {credentials.password.length==0?
-                            <li>
-                                Minimum 7 characters long
-                            </li>:
-                            !passwordcondition[2]?
-                            //case when condition is false
-                            <li className="text-red-500">
-                                Minimum 7 characters long
-                            </li>
-                            :
-                            //case when conition is true
-                            <li className="text-green-400">
-                                Minimum 7 characters long
-                            </li>
-                            }
-                            {credentials.password.length==0?
-                            <li>
-                                Contains at least 1 number
-                            </li>:
-                            !passwordcondition[3]?
-                            //case when condition is false
-                            <li className="text-red-500">
-                                Contains at least 1 number
-                            </li>
-                            :
-                            //case when conition is true
-                            <li className="text-green-400">
-                                Contains at least 1 number
-                            </li>
-                            }
-                            
-                        </ul>
-                    </div>
-                    <div>
-                            <button type="button">
-                            {!checked?
-                            <div className="flex items-center mb-4">
-                                <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onClick={toggleCheckBox}/>
-                                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to the privacy policy and cookie usage</label>
-                            </div>:
-                            <div className="flex items-center mb-4">
-                                <input checked id="checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onClick={toggleCheckBox}/>
-                                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to the privacy policy and cookie usage</label>
-                            </div>}
-
-                            </button>
+                        
                     </div>
                     <button 
                         type="submit" 
-                        className={`mt-4 bg-blue-500 text-white font-semibold py-2 rounded-md transition duration-200 ${checked?'hover:cursor-pointer hover:bg-blue-700':'hover:cursor-not-allowed'}`}
+                        className="bg-blue-500 mt-20 py-2 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200"
                         onClick={(e)=>handleClick(e)}
-                        disabled = {!checked}
                     >
-                        Sign Up
+                        Sign In
                     </button>
                 </form>
             </div>
