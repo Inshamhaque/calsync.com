@@ -18,7 +18,7 @@ export const Signin = () => {
     };
     //error toast 
     const error = ()=>{
-        return toast.success('Error sending mail to the user, Check your credentials',{
+        return toast.error('Error sending mail to the user, Check your credentials',{
             position : 'top-right',
             delay : 5000
         })
@@ -58,12 +58,12 @@ export const Signin = () => {
                 mail : credentials.mail,
                 password : credentials.password,
             })
-            if(res.status!=200){
-               if(res.status==404){
+            if(res.data.status!=200){
+               if(res.data.status==404){
                     error_user_not_signed_up();
                     return;
                }
-               else if(res.status==411){
+               else if(res.data.status==411){
                     error_incorrect_password();
                     return;
                }
@@ -115,7 +115,7 @@ export const Signin = () => {
         }
     }
     return (
-        <div className="flex-col min-h-screen bg-slate-900 h-full m-5 rounded-lg border border-gray-600 shadow-md p-10 w-[30rem]">
+        <div className="flex-col  bg-slate-900 h-full m-5 rounded-lg border border-gray-600 shadow-md p-10 w-[30rem]">
             {/* CTA */}
             <div className="mb-10 text-center">
                 <h2 className="text-white font-bold text-2xl">Welcome Back</h2>

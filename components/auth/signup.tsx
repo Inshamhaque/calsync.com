@@ -26,7 +26,7 @@ export const Signup = () => {
     const togglePasswordVisibility = () => {
         setPasswordVisible((prev) => !prev);
     };
-    //error toast 
+    //error toasts 
     const error = ()=>{
         return toast.error('Incorrect credentials',{
             position : 'top-right',
@@ -47,6 +47,12 @@ export const Signup = () => {
     }
     const error4 = ()=>{
         return toast.error('Some unknown error occurred',{
+            position : 'top-right',
+            delay : 5000
+        })
+    }
+    const error5 = ()=>{
+        return toast.error('Catch block executed',{
             position : 'top-right',
             delay : 5000
         })
@@ -74,28 +80,33 @@ export const Signup = () => {
         e.preventDefault();
         console.log('base url is : ',BASE_URL);
         try{
-            const res = await axios.post(`${BASE_URL}/api/auth/signup`,{
+            const res = await axios.post(`${BASE_URL}/api/auth/signup`,JSON.stringify({
                 mail : credentials.mail,
                 password : credentials.password,
                 username : credentials.username 
+            }),{
+                headers : {
+                    'Content-Type' : 'application/json'
+                }
             })
-            if(res.status!=200){
-                if(res.status==411){
-                    console.log('incorrect credential format');
+            console.log('status is:',res.status);
+            if(res.data.status!==200){
+                if(res.data.status==411){
+                    console.log('invlaid credentials');
                     error();
                     return;
                 }
-                else if(res.status==409){
+                if(res.data.status===409){
                     console.log('user already exists');
                     error2();
                     return;
                 }
-                else if(res.status==422){
+                if(res.data.status===422){
                     console.log('error creating user');
                     error3();
                     return;
                 }
-                else{
+                if(res.data.status===500){
                     console.log('some other error occurred');
                     error4();
                     return;
@@ -139,12 +150,12 @@ export const Signup = () => {
             }
         }
         catch(e){
-            error();
+            error5();
             console.log('some error occurred'+e);
         }
     }
     return (
-        <div className="m-20 rounded-lg shadow-md">
+        <div className="w-inherit m-10 lg:m-20 rounded-lg shadow-md">
             {/* CTA */}
             <div className="mb-10">
                 <h2 className="text-white font-bold text-3xl">Create your CalSync.com account</h2>

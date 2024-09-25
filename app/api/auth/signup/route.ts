@@ -16,7 +16,6 @@ export async function POST(req:NextRequest){
         if(!result.success){
             return NextResponse.json({
                 message : " Input validation failed",
-            },{
                 status : 411
             })
         }
@@ -29,7 +28,6 @@ export async function POST(req:NextRequest){
         if(existing_user){
             return NextResponse.json({
                 message : "user already exists, try logging in",
-            },{
                 status : 409
             })
         }
@@ -56,7 +54,6 @@ export async function POST(req:NextRequest){
             console.log('user not created');
             return NextResponse.json({
                 msg : "Try again later",
-            },{
                 status : 422
             })
         }
@@ -64,8 +61,7 @@ export async function POST(req:NextRequest){
         return NextResponse.json({
             msg : "user created successfully",
             otp : otp,
-        },{
-            status:200
+            status : 200
         })
         
 
@@ -73,7 +69,6 @@ export async function POST(req:NextRequest){
     catch(e){
         return NextResponse.json({
             message : 'some error occurred:' + e,
-        },{
             status:500
         })
 

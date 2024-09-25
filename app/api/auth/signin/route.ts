@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import client from '@/prisma/index'
 import { z } from 'zod';
 import { signinschema } from "@/support/zodschema";
+import { status } from "nprogress";
 export async function POST(req:NextRequest){
     const {password,mail} = await req.json();
     const hashedpassword = await  bcrypt.hash(password,10);
@@ -31,9 +32,8 @@ export async function POST(req:NextRequest){
         if(!existing_user){
             return NextResponse.json({
                 message : "user does not exists, try signing up",
-            },{
                 status : 404
-            })
+            });
         }
         // else create a new user 
         //generate a random otp .. this syntax ensures that always 4 digit substring is generated
@@ -45,10 +45,9 @@ export async function POST(req:NextRequest){
         const success = await bcrypt.compare(password,dbpassword);
         if(!success){
             return NextResponse.json({
-                message : "incorrect password"
-            },{
+                message : "incorrect password",
                 status : 411
-            })
+            });
         }
         // if password matches, then :- 
         const updateOTP = await client.user.update({
@@ -68,16 +67,14 @@ export async function POST(req:NextRequest){
         if(!updateOTP){
             return NextResponse.json({
                 message : 'OTP update problem',
-            },{
                 status : 500
-            })
+            });
         }
         return NextResponse.json({
             msg : 'User authenticated successfully',
-            otp : otp
-        },{
+            otp : otp,
             status : 200
-        })
+        });
     }
     catch(e){
         return NextResponse.json({

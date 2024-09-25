@@ -16,9 +16,9 @@ export const OTPClient = () => {
 
     useEffect(() => {
         const storedMail = localStorage.getItem('mail :');
-        if(!storedMail){
-            router.push('/auth/signin');
-        }
+        // if(!storedMail){
+        //     router.push('/auth/signin');
+        // }
         setMail(storedMail);
         
     }, []);
@@ -98,12 +98,12 @@ export const OTPClient = () => {
         }
     };
     return (
-        <div className="flex justify-center items-center m-20">
+        <div className="flex-col md:flex justify-center pt-20 items-center m-30 md:p-20">
             <div className="flex-col justify-center items-center border bg-gray-800 p-10 rounded-md">
                 {/* CTA */}
                 <div className="mb-10">
                     <h2 className="font-bold text-xl text-center">Check your email</h2>
-                    <p className="text-xs text-gray-400">We've sent an email to {mail}. Kindly verify by entering the OTP.</p>
+                    <p className="text-xs text-center text-gray-400">We've sent an email to {mail}. Kindly verify by entering the OTP.</p>
                 </div>
                 {/* OTP box */}
                 <div className="flex justify-center mb-10">
