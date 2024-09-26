@@ -1,6 +1,8 @@
 import { ProfileClient } from "@/Clients/Profile/profileClient"
 export default function(){
     return(
-        < ProfileClient />
+        <div className="bg-[#212121] ">
+            < ProfileClient />
+        </div>
     )
 }

@@ -20,7 +20,7 @@ export async function POST(req:NextRequest){
             })
         }
         //checking if user exists or not 
-        const existing_user = await client.user.findUnique({
+        const existing_user = await client.user.findFirst({
             where :{
                 mail
             }

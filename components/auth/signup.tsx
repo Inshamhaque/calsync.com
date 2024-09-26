@@ -89,7 +89,7 @@ export const Signup = () => {
                     'Content-Type' : 'application/json'
                 }
             })
-            console.log('status is:',res.status);
+            console.log('status is:',res.data.status);
             if(res.data.status!==200){
                 if(res.data.status==411){
                     console.log('invlaid credentials');
@@ -120,30 +120,30 @@ export const Signup = () => {
             subject: "Verification OTP",
             message: 
             `<html>
-        <body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
-            <div style="border: 2px solid #000; padding: 20px; text-align: center; width: 600px; margin: 0 auto; background-color: #fff;">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-weight: bold; font-size: 22px;">CalSync.com</div>
-            </div>
-            <div style="font-size: 18px; padding: 4px; margin-bottom: 20px;"></div>
-            <hr style="border-top: 1px solid #000; margin: 20px 0;">
-            <div style="font-size: 20px; font-weight: bold; padding: 10px; color: #333;">OTP Verification</div>
-            <div style="font-size: 18px; padding: 4px; line-height: 1.5; color: #555;">
-                <p>Dear ${credentials.username}</p>
-                <p>Welcome to the CalSync!</p>
-                <p>To complete your registration, please verify your email by using the OTP below:</p>
-                <p style="font-size: 24px; font-weight: bold; color: #007bff;">${res.data.otp}</p>
-                <p>This OTP is valid for the next 10 minutes. If you did not request this, please ignore this email.</p>
-            </div>
-            
-            <hr style="border-top: 1px solid #000; margin: 20px 0;">
-            <div style="font-size: 16px; padding-top: 10px; color: #777;">
-                <p>Date:${today}</p>
-            </div>
-            </div>
-        </body>
-        </html>`
-            });
+            < body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+                <div style="border: 2px solid #000; padding: 20px; text-align: center; width: 600px; margin: 0 auto; background-color: #fff;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-weight: bold; font-size: 22px;">CalSync.com</div>
+                </div>
+                <div style="font-size: 18px; padding: 4px; margin-bottom: 20px;"></div>
+                <hr style="border-top: 1px solid #000; margin: 20px 0;">
+                <div style="font-size: 20px; font-weight: bold; padding: 10px; color: #333;">OTP Verification</div>
+                <div style="font-size: 18px; padding: 4px; line-height: 1.5; color: #555;">
+                    <p>Dear ${credentials.username}</p>
+                    <p>Welcome to the CalSync!</p>
+                    <p>To complete your registration, please verify your email by using the OTP below:</p>
+                    <p style="font-size: 24px; font-weight: bold; color: #007bff;">${res.data.otp}</p>
+                    <p>This OTP is valid for the next 10 minutes. If you did not request this, please ignore this email.</p>
+                </div>
+                
+                <hr style="border-top: 1px solid #000; margin: 20px 0;">
+                <div style="font-size: 16px; padding-top: 10px; color: #777;">
+                    <p>Date:${today}</p>
+                </div>
+                </div>
+            </body>
+            </html>   `
+                });
             if(res2){
                 localStorage.setItem('mail :',credentials.mail)
                 router.push('/auth/verify');
@@ -282,7 +282,8 @@ export const Signup = () => {
                             <div className="flex items-center mb-4">
                                 <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onClick={toggleCheckBox}/>
                                 <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to the privacy policy and cookie usage</label>
-                            </div>:
+                            </div>
+                            :
                             <div className="flex items-center mb-4">
                                 <input checked id="checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onClick={toggleCheckBox}/>
                                 <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to the privacy policy and cookie usage</label>
