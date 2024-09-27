@@ -3,7 +3,8 @@ import { Header } from '@/components/Landing/Header';
 import { Hero } from '@/components/Landing/Hero';
 const poppins = Poppins({
     weight: ['400', '700'], // Add the weights you need
-    subsets: ['latin'],     // Choose the subsets you need
+    subsets: ['latin'], 
+        // Choose the subsets you need
 });
 
 export const Landing  = ()=>{

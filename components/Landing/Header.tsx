@@ -1,13 +1,14 @@
 'use client'
 import { Poppins } from "@next/font/google";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 const poppins = Poppins({
     weight: ['400', '700'],
     subsets: ['latin'],
 });
 
 export const Header = () => {
+    const router = useRouter();
     return (
         <div className={`${poppins.className} flex justify-between items-center`}>
             <div className="font-semibold text-xl">CalSync.com</div>
@@ -15,7 +16,10 @@ export const Header = () => {
                 <Navbar />
             </div>
             <div>
-                <button className="bg-black text-white px-4 py-2 rounded-full">SignIn</button>
+                <button className="bg-black text-white px-4 py-2 rounded-full" 
+                onClick={()=>{
+                    router.push('/auth/signin');
+                }}>SignIn</button>
             </div>
         </div>
     );
@@ -42,10 +46,9 @@ const Navbar = () => {
                         <div
                             className="absolute z-20 bg-gray-800 text-white text-xs px-4 py-2 rounded-md shadow-lg"
                             style={{
-                                top: '100%',  // Positions the tooltip below the hovered item
-                                left: '50%',  // Centers the tooltip under the item
-                                transform: 'translateX(-50%) translateY(10px)', // Adjust position slightly below navbar
-                                whiteSpace: 'nowrap'  // Prevents the tooltip text from breaking into lines
+                                top: '100%',  
+                                left: '50%',  
+                                transform: 'translateX(-50%) translateY(10px)',                                whiteSpace: 'nowrap'
                             }}
                         >
                             Tooltip for {item}

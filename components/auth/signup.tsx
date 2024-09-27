@@ -291,6 +291,10 @@ export const Signup = () => {
 
                             </button>
                     </div>
+                    <div className="flex justify-center items-center text-sm text-gray-500 space-x-5">
+                        <p>Already have an account?</p>
+                        <p className="hover:text-blue-500 hover:cursor-pointer underline underline-offset-1" onClick={()=>{router.push('/auth/signin')}}>SignIn</p>
+                    </div>
                     <button 
                         type="submit" 
                         className={`mt-4 bg-blue-500 text-white font-semibold py-2 rounded-md transition duration-200 ${checked?'hover:cursor-pointer hover:bg-blue-700':'hover:cursor-not-allowed'}`}
