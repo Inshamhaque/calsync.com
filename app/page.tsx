@@ -2,7 +2,7 @@ import { Landing } from "@/Clients/Landing";
 
 export default function() {
   return (
-    <div>
+    <div className="h-screen">
       < Landing />
     </div>
   );

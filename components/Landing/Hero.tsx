@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 export const Hero = () => {
     const router = useRouter();
     return (
-        <div className="md:grid md:grid-cols-3 p-8 text-black">
+        <div className="md:grid md:grid-cols-3 overflow-hidden max-w-screen text-black">
             <div className="md:col-span-2 max-w-2xl">
-                <h1 className="text-5xl font-bold leading-tight">
+                <h1 className="text-4xl font-bold leading-tight">
                     Scheduling infrastructure for&nbsp;
                     <span className="text-gray-500 font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-700">
                         everyone.

@@ -9,7 +9,7 @@ const poppins = Poppins({
 
 export const Landing  = ()=>{
     return(
-        <div className={`${poppins.className} text-black bg-gradient-to-r from-slate-50 to-gray-300 h-screen pl-3 pr-3 pt-4 md:p-5 space-y-10`}>
+        <div className={`${poppins.className} text-black bg-gradient-to-r from-slate-50 to-gray-300 pl-3 pr-3 pt-4 md:p-5 space-y-10 h-screen`}>
             <Header />
             < Hero />
         </div>

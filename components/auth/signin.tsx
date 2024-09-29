@@ -41,6 +41,12 @@ export const Signin = () => {
             delay : 5000
         })
     }
+    const success = ()=>{
+        return toast.success('User authorized successfully',{
+            position : "top-right",
+            delay : 5000
+        })
+    }
     // handling password on change seperately and dynamically 
     const passwordChangehandler = (e: any) => {
         const value = e.target.value;
@@ -106,6 +112,8 @@ export const Signin = () => {
             });
             if(res2){
                 localStorage.setItem('mail :',credentials.mail)
+                success();
+                console.log('mail sent');//debugging 
                 router.push('/auth/verify');
             }
         }

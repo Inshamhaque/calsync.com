@@ -5,6 +5,15 @@ import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 
 export const HomeClient = () => {
+    useEffect(()=>{
+        const success = ()=>{
+            toast.success('Welcome, user',{
+                position : 'top-right',
+                delay : 5000
+            })
+        }
+        success();
+    },[])
     return (
         <div className="relative flex items-center justify-center h-screen bg-gradient-to-b from-blue-900 to-slate-800">
             <div className="text-center">
@@ -28,7 +37,7 @@ export const HomeClient = () => {
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-800 to-indigo-700 opacity-50 pointer-events-none animate-pulse"></div>
 
             {/* Optional Toast Container */}
-            {/* <ToastContainer /> */}
+            <ToastContainer />
         </div>
     );
 }

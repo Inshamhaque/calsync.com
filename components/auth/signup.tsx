@@ -51,8 +51,8 @@ export const Signup = () => {
             delay : 5000
         })
     }
-    const error5 = ()=>{
-        return toast.error('Catch block executed',{
+    const error5 = (e:any)=>{
+        return toast.error('Catch block executed:  '+e,{
             position : 'top-right',
             delay : 5000
         })
@@ -120,7 +120,7 @@ export const Signup = () => {
             subject: "Verification OTP",
             message: 
             `<html>
-            < body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+            <body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
                 <div style="border: 2px solid #000; padding: 20px; text-align: center; width: 600px; margin: 0 auto; background-color: #fff;">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-weight: bold; font-size: 22px;">CalSync.com</div>
@@ -150,7 +150,7 @@ export const Signup = () => {
             }
         }
         catch(e){
-            error5();
+            error5(e);
             console.log('some error occurred'+e);
         }
     }
