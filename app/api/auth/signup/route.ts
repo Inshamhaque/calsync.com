@@ -67,10 +67,11 @@ export async function POST(req:NextRequest){
 
     }
     catch(e){
+        console.log('error occurred while signing up'+e);
         return NextResponse.json({
             message : 'some error occurred:' + e,
             status:500
         })
-
+        
     }
 }

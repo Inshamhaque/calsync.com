@@ -8,12 +8,14 @@ datasource db {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  username    String  @unique
-  mail        String  @unique
-  password    String
-  is_verified Boolean @default(false)
-  otp         OTP     @relation(fields: [id], references: [otpId])
+  id             Int      @id @default(autoincrement())
+  username       String   @unique
+  mail           String   @unique
+  password       String
+  is_verified    Boolean  @default(false)
+  eventOrganized Events?  @relation("organizer-event-relation")
+  otp            OTP      @relation(fields: [id], references: [otpId])
+  eventsAttended Events[] @relation("attendee-event-relation")
 }
 
 model OTP {
@@ -22,4 +24,20 @@ model OTP {
   created_At DateTime @default(now())
   expiry_At  DateTime
   user       User?
+}
+
+model Events {
+  event_id    Int      @id @default(autoincrement())
+  description String
+  date        DateTime @default(now())
+  mode        Mode
+  location    String?
+  link        String?
+  organiser   User     @relation("organizer-event-relation", fields: [event_id], references: [id])
+  attendees   User[]   @relation("attendee-event-relation")
+}
+
+enum Mode {
+  Offline
+  Online
 }

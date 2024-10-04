@@ -1,0 +1,43 @@
+.event-search-button {
+    position: relative; /* Create positioning context */
+    background-color: blue; /* Button background color */
+    color: white; /* Text color */
+    padding: 10px 20px; /* Padding around the text */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    overflow: hidden; /* Prevent overflow of pseudo-elements */
+    transition: color 0.4s ease; /* Smooth color transition */
+    z-index: 2; /* Ensure button text is above pseudo-element */
+}
+
+/* Optional: Add hover effect to change text color */
+.event-search-button:hover {
+    color: #ffcc00; /* Change text color on hover */
+}
+
+.event-search-button::before {
+    content: ""; /* Required for pseudo-elements */
+    position: absolute; /* Position it absolutely within the button */
+    top: -3px; /* Position above the button */
+    left: -3px; /* Position to the left of the button */
+    right: -3px; /* Position to the right of the button */
+    bottom: -3px; /* Position below the button */
+    border-radius: 8px; /* Match button’s border radius with a larger radius for the border effect */
+    border: 3px solid transparent; /* Set transparent border */
+    background-image: linear-gradient(white, white), linear-gradient(45deg, red, blue, green, yellow, red); /* Two gradients */
+    background-origin: border-box; /* Start background from the border box */
+    background-clip: content-box, border-box; /* Clip backgrounds */
+    animation: rotate 4s linear infinite; /* Animation for the border */
+    z-index: 1; /* Ensure the pseudo-element is behind the button */
+    pointer-events: none; /* Prevent mouse events on the pseudo-element */
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg); /* Start position */
+    }
+    100% {
+        transform: rotate(360deg); /* Full rotation */
+    }
+}
